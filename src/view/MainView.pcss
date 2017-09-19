@@ -1,0 +1,161 @@
+@import "../pcss/utils.pcss";
+
+
+.MainView{
+	@mixin fit-parent{};
+	z-index: 100;
+	display: flex;
+	flex-direction: column;
+
+
+
+	.main-header{
+		@mixin elev-4{};
+		background: $color-prim-darker;
+		z-index: 100;
+		height: 72px;
+		display: flex;
+		flex-direction: row;
+		
+		.brand{
+			margin-left: 32px;
+			overflow: hidden;
+			h1{
+				color: $txt-on-prim-dark;
+				font-size: 24px;
+				padding-top: 8px;
+				letter-spacing: .1em;
+			}
+			h2{
+				color: $txt-on-prim-dark;
+				opacity: .8;
+				font-weight: 100;
+				text-align: right;
+				letter-spacing: .15em;
+			}
+		}
+
+		.user-info{
+			font-size: 18px;
+			letter-spacing: .1em;
+			padding: 8px;
+			color: $txt-light;
+			
+			align-self: center; /*  apply this property to this flex item (from its parent) */
+
+			/* The other way to align the children is to have this element being a flex
+			   and use the align-items as: */
+			/*   
+			display: flex;			   			   
+			align-items: center;
+			*/
+			
+			/* full explanation:  http://stackoverflow.com/a/33049392/686724 */
+		}
+
+	}
+
+	.main-frame{
+		flex: 1;
+		display: flex;
+		position: relative;
+		flex-direction: row;
+		background: $color-grey-lightest;
+		
+		@mixin media-mobile{
+			flex-direction: column-reverse;
+		}
+
+		.main-nav{
+
+			background: $color-grey-lighter;
+			@mixin elev-2;
+			border-radius: 5px;
+			
+			margin-left: 32px;
+			margin-top: 32px;
+
+			display: flex;
+			flex-direction: column;
+			height: fit-content;
+			
+			@mixin media-mobile{
+				flex-direction: row;
+				width: fit-content;
+				align-self: center;
+				margin: 0 0 16px 0;
+			}
+
+						
+			a{
+				width: 128px;
+				height: 100px;
+				border-bottom: solid 1px #fff;
+				color: $color-grey-darkest;
+				padding: 16px;
+				display: flex;
+				flex-direction: column;
+				text-decoration: none;
+				font-size: 18px;
+				align-items: center;
+				font-weight: 100;
+				
+				@mixin ripple;
+				
+				@mixin media-mobile{
+					border-bottom: none;
+					border-right: solid 1px #fff;
+				}
+				
+				i{					
+					width: 32px;
+					height: 32px;
+					fill: $color-grey-dark;
+					flex: none;
+				}
+
+				label{
+					
+					margin-top: 8px;
+					display: block;
+					text-align: center;
+					flex: 1;
+				}
+
+				&.active{
+					font-weight: 600;
+					background: $color-grey-lightest; 
+					color: $color-grey-darkest;
+					
+				}
+			}
+
+			a:first-child{
+				border-radius: 5px 5px 0 0;
+				@mixin media-mobile{
+					border-radius: 5px 0 0 5px;
+				}
+			}
+
+			a:last-child{
+				border-radius:  0 0 5px 5px;
+				@mixin media-mobile{
+					border-right: none;
+				}
+				
+			}			
+		}
+
+		.main-content{
+			flex: 1;
+			padding: 32px 16px;
+			display: flex;
+			flex-direction: row;
+			
+			@mixin media-mobile{
+				margin: 0;
+			}
+		}
+	}
+
+}

@@ -1,0 +1,82 @@
+<script type="text/html" id="HomeView">
+	<div class="HomeView">
+		<div class="HomeView-header">
+			<div class="title">
+				Primary Data
+			</div>
+		</div>
+		<div class="HomeView-content">
+			<div class="table">
+				<div class="table-header">
+					<div class="row">
+						<div class="cell drag-col"></div>
+						<div class="cell feature">Feature <a class="edit">edit</a></div>
+						<div class="cell requirement">Requirement</div>
+						<div class="cell funcitonal">Functional-Design</div>
+						<div class="cell visual">Visual-Design</div>
+						<div class="cell spec">Spec</div>
+						<div class="cell api">API</div>
+						<div class="cell impl">
+							<span>Impl</span>
+							<a class="edit">edit</a>
+						</div>
+					</div>
+				</div>
+				<div class="table-content">
+					<div class="rows-con">
+						
+					</div>
+					<div class="row row-add">
+						<div class="cell">
+							{{{symbol "ico-dashboard" "small"}}}
+							<input class="new-feature" placeholder="Enter new top feature name" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>
+	
+<script type="text/html" id="HomeView-table-row-item">
+	<div class="row {{#if parentId}}secondary{{/if}}" data-entity="Feature" data-entity-id="{{id}}" data-parent-id="{{parentId}}">
+		<div class="cell drag-col">
+			{{{symbol "ico-dashboard" "small"}}}
+		</div>
+		<div class="cell feature" data-prop="Feature.name">
+			<span class="name">{{name}}</span>
+		</div>
+		<div class="cell requirement progress-cell" data-prop="Feature.totalRequirementProgress">
+			{{{symbolncl "HomeView-progress-bar" totalRequirementProgress}}}
+		</div>
+		<div class="cell funcitonal progress-cell" data-prop="Feature.totalFunctionalProgress">
+			{{{symbolncl "HomeView-progress-bar" totalFunctionalProgress}}}
+		</div>
+		<div class="cell visual" data-prop="Feature.visual">{{visual}}</div>
+		<div class="cell spec" data-prop="Feature.spec">{{spec}}</div>
+		<div class="cell api" data-prop="Feature.api">{{api}}</div>
+		<div class="cell impl" data-prop="Feature.impl">{{impl}}</div>
+		<div class="cell action-col">
+			<div class="btn-delete">
+				{{{symbol "ico-cross" "smallest"}}}
+			</div>
+		</div>
+	</div>
+</script>
+
+<script type="text/html" id="HomeView-progress-bar">
+	<div class="progress-bar {{#check this '===' 100}}done{{/check}}" data-progress="{{this}}">
+		<div class="bar" style="width: {{this}}%"></div>
+		<div class="txt">{{this}}%</div>
+	</div>
+</script>
+
+<script type="text/html" id="HomeView-slide-bar">
+	<div class="slide-bar">
+		<div class="slide-con">
+			<div class="slide-valve"></div>
+		</div>
+		<input class="slide-val" />
+		<span>%</span>
+	</div>
+</script>

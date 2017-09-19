@@ -1,0 +1,84 @@
+@import "../pcss/utils.pcss";
+
+.NotificationView{
+	position: absolute; 
+	top: 56px;
+	right: -250px;
+	height: 400px;
+	width: 250px;
+	
+	z-index: 1000;
+	
+	/* Note: The container here allows us to encapsulate the notif-item full height (with margin and all) without doing js computation. 
+	*        Also it allows to reduce the height without forcing a relayout of the of the notif-item
+	*/
+	.notif-ctn{
+
+		/* Workaround: If we do not set a border bottom, the margin-bottom of the notif-item is not computed in this nofif-ctn.offsetHeigth, 
+		               which when need to set the starting point of the height animation on remove.*/
+		border-bottom: solid 1px rgba(255,255,255,0);
+
+		/* The draw out and back in animation 100% css.
+			 On this animationend Javascript will set height: 0px to start the transition below
+		*/
+		animation: notif-keyframes 4s;
+		
+		/* This transition property will be used just before deleting the notif-ctn so that the eventual notification below will smoothly move up. */
+		transition: height .5s ease-in-out; 		
+		
+		/* The notification item itself with its margin and layout rule. Because the animation and transition is on the container element above (.notif-ctn)
+			  we do not have to worry about animation/transition artifact. */
+		.notif-item{
+			@mixin elev-4;
+			transition: $trans-elev;	
+			
+			/* Just for fun, probably not a good UI pattern */
+			&:hover{
+				@mixin elev-24;
+			}
+
+			background: $color-prim-lightest;
+			position: relative;
+			min-height: 64px;
+			padding: 8px 12px;
+			margin-bottom: 16px;
+
+			/* The darker bar on the left */
+			&:after{
+				content: "";
+				position: absolute;
+				top: 0; left: 0; bottom: 0;
+				width: 5px;
+				background: $color-prim-light;
+			}
+
+			&.warning{
+				background: $color-warn-lightest;
+				&:after{
+					background: $color-warn-darkest;
+				}
+			}
+
+			&.error{
+				background: $color-error-lightest;
+				&:after{
+					background: $color-error-darkest;
+				}
+			}		
+		}		
+	}
+
+}
+
+/* The keyframe animation for the notif-ctn */
+@keyframes notif-keyframes{
+	0%{
+		transform: none;
+	}
+	10%,80%{
+		transform: translateX(-250px);
+	}
+	100%{
+		transform: translateX(0);
+	}
+}

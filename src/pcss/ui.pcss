@@ -1,0 +1,94 @@
+@import "./utils.pcss";    
+
+
+/* --------- UI Card --------- */
+.ui-card{	
+	padding: 16px 32px;
+	@mixin elev-2;
+	
+							
+	display: flex;
+	flex-direction: column;
+	background: #fff;
+	
+	header{
+		font-size: 24px;
+		color: $txt-light;
+		letter-spacing: .1em;
+		height: 48px;
+		align-items: center;
+		display: flex;
+		margin-bottom: 16px;
+	}
+
+	section.content{
+		flex: 1;
+		display: flex;
+	}
+}
+/* --------- /UI Card --------- */
+
+/* --------- UI Table --------- */
+.ui-table{
+	flex: 1;	
+	display: flex; 
+	flex-direction: column;
+	
+
+	/* The header row of the table */
+	.ui-thead{
+		display: flex;
+		flex-direction: row;
+		height: 32px;
+		align-items: center;
+		background-color: $bkg-lighter;
+		
+		> *{
+			display: flex;
+			align-items: center; /* align vertical */
+			height: 100%;
+			padding-left: 8px;
+			flex: 1;
+			border: solid 1px #fff;
+
+		}
+	}
+
+	/* The body container of the table */
+	.ui-tbody{
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		border-bottom: solid 1px $bdr-lightest;
+		overflow: scroll;
+		
+		/* placeholder div when the table is loading content */
+		.ui-tholder{
+			flex: 1;
+			align-items: center;
+			display: flex;
+			justify-content: center;
+			font-size: 32px;
+			color: $txt-light;
+			font-weight: 100;
+			letter-spacing: .1em;
+		}
+
+
+		/* the table row. Each direct element is considered to be a cell. */
+		.ui-tr{			
+			display: flex;
+			flex-direction: row;
+			border-bottom: solid 1px $bdr-lighter;
+			min-height: 32px;
+			align-items: center;
+			> *{
+				padding-left: 8px;
+				flex: 1;
+				overflow: hidden;
+			}
+		}		
+	}
+}
+/* --------- /UI Table --------- */
+
