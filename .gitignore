@@ -36,3 +36,4 @@ web/test/*.css
 *.sublime-workspace
 
 package-lock.json
+db/

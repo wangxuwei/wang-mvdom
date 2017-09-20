@@ -3,6 +3,7 @@ import { closest, all, first, empty, prev, remove } from "mvdom";
 import { elAbsOffset, elCopy, elFrom } from "../ts/app";
 import { entityRef } from "../ts/utils";
 import { render } from "../ts/render";
+import { dso } from "../ts/ds";
 
 export class HomeView extends BaseView {
 	_dragItem: any;
@@ -24,9 +25,9 @@ export class HomeView extends BaseView {
 			// enter
 			if (evt.which === 13){
 				var val = inputEl.value;
-				// ds.get("Feature").create({name: val}).then(() => {
-				// 	inputEl.value = "";
-				// });
+				dso("Feature").create({name: val}).then(() => {
+					inputEl.value = "";
+				});
 			}
 		},
 
@@ -120,7 +121,7 @@ export class HomeView extends BaseView {
 			var value = progressBarEl.getAttribute("data-progress")!;
 			let valueNum = isNaN(parseInt(value)) ? 0 : parseInt(value);
 
-			var slideBarEl = render("Dashboard-slide-bar");
+			var slideBarEl = render("HomeView-slide-bar");
 			setPosition.call(view, slideBarEl, valueNum);
 
 			empty(cellEl);
@@ -131,7 +132,7 @@ export class HomeView extends BaseView {
 		"click; .btn-delete": (evt:any) => {
 			var view = this;
 			var entityInfo:any = entityRef(evt.target);
-			// ds.get(entityInfo.type).remove(entityInfo.id);
+			dso(entityInfo.type).remove(entityInfo.id);
 		}
 	});
 
@@ -150,7 +151,7 @@ export class HomeView extends BaseView {
 							empty(cellEl);
 							var value  = (<HTMLInputElement>first(slideBarEl, "input")).value;
 							let valueNum = isNaN(parseInt(value)) ? 0 : parseInt(value);
-							var progressBarEl = render("Dashboard-progress-bar", value);
+							var progressBarEl = render("HomeView-progress-bar", value);
 							cellEl.appendChild(progressBarEl);
 
 							var propInfo:any = getPropInfo(cellEl);
@@ -159,7 +160,7 @@ export class HomeView extends BaseView {
 							if (entityInfo){
 								var vals:any = {};
 								vals[propInfo.name] = propInfo.value;
-								// ds.get(entityInfo.type).update(entityInfo.id, vals);
+								dso(entityInfo.type).update(entityInfo.id, vals);
 							}
 						}
 					}
@@ -274,22 +275,22 @@ function refreshLists(this: HomeView){
 	var tableEl = first(view.el, ".table")!;
 	var conEl = first(tableEl, ".table-content .rows-con")!;
 	empty(conEl);
-	// ds.get("Feature").getFeaturesByRank().then((features:any) => {
-	// 	features = features || [];
-	// 	for(var i = 0; i < features.length; i++){
-	// 		var item = features[i];
-	// 		item.totalRequirementProgress = item.totalRequirementProgress || 0;
-	// 		item.totalFunctionalProgress = item.totalFunctionalProgress || 0;
-	// 		var html = render("Dashboard-table-row-item", item);
-	// 		conEl.appendChild(elFrom(html));
-	// 	}
+	dso("Feature").getFeaturesByRank().then((features:any) => {
+		features = features || [];
+		for(var i = 0; i < features.length; i++){
+			var item = features[i];
+			item.totalRequirementProgress = item.totalRequirementProgress || 0;
+			item.totalFunctionalProgress = item.totalFunctionalProgress || 0;
+			var html = render("HomeView-table-row-item", item);
+			conEl.appendChild(html);
+		}
 
-	// 	if(tableEl.classList.contains("edit-mode")){
-	// 		all(conEl, "[data-prop]:not(.progress-cell)").forEach((propEl) => {
-	// 			propEl.setAttribute("data-editable", "");
-	// 		});
-	// 	}
-	// });	
+		if(tableEl.classList.contains("edit-mode")){
+			all(conEl, "[data-prop]:not(.progress-cell)").forEach((propEl) => {
+				propEl.setAttribute("data-editable", "");
+			});
+		}
+	});	
 }
 
 function saveOrders(this: HomeView){
@@ -302,7 +303,7 @@ function saveOrders(this: HomeView){
 		obj.parentId = obj.parentId ? obj.parentId * 1 : null;
 		features.push(obj);
 	});
-	// ds.get("Feature").reorderFeatures(features);
+	dso("Feature").reorderFeatures(features);
 }
 
 function setPosition(this: HomeView, slideBarEl:any, value:any){

@@ -2,7 +2,7 @@ import { Server as HapiServer, PluginRegistrationObject, RouteConfiguration, Cor
 import * as Inert from 'inert';
 import { exec } from 'child_process';
 
-// import { routes as osUsageRoutes } from './api/os-usage';
+import { routes as featureRoutes } from './api/api-feature';
 
 var isWin = /^win/.test(process.platform);
 
@@ -66,8 +66,8 @@ class Server {
 			}
 		});
 
-		// load the osUsage API routes
-		// this.hapiServer.route(osUsageRoutes);
+		// load API routes
+		this.hapiServer.route(featureRoutes);
 	}
 
 	start() {

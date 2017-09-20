@@ -1,6 +1,7 @@
 import { empty, trigger, first } from "mvdom";
 import { ds } from "./ds";
-import { DsoMem } from "./dsoMem";
+import { DsoRest } from "./dsoRest";
+import { DsoFeatureRest } from "./dsoFeature";
 import { ajax } from "./ajax"
 
 /**
@@ -14,11 +15,11 @@ import { ajax } from "./ajax"
 // --------- DataService Initialization --------- //
 // For the demo, we will have the Memory Dso fallback for any type the application might use. 	
 ds.fallback(function (type) {
-	return new DsoMem(type);
+	return new DsoRest(type);
 });
 
 // For production, you might want to have some Entity DSO object that you would register as follow
-// ds.register("Task", new TaskDso());
+ds.register("Feature", new DsoFeatureRest());
 // --------- /DataService Initialization --------- //
 
 
