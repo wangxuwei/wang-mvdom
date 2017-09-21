@@ -13,19 +13,17 @@ export class FeatureDao extends BaseDao{
 		var entity = this._entity;
 		var rank = 1;
 
-
-		return new Promise(function(resolve, reject){
+		return new Promise(async function(resolve, reject){
 			for(var i = 0; i < features.length; i++){
 				var feature = features[i];
 				feature.rank = rank++;
 				var id = feature.id
 
 				// put the new entity properties in the dbEntity
-				feature = Object.assign(self.get(id), feature);
+				feature = Object.assign(await self.get(id), feature);
 				
 				//make sure we do not change the .id
 				delete feature.id;
-
 				self.update(id, feature);
 			}
 			// we resolve 

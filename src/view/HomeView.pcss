@@ -50,8 +50,13 @@
 			}
 			&-header{
 				min-height: 32px;
-				.cell{
-					font-weight: bold;
+				.row{
+					.cell{
+						font-weight: bold;
+						&.action-col{
+							display: flex;
+						}
+					}
 				}
 			}
 			&-content{
@@ -88,7 +93,9 @@
 						}
 
 						&.action-col{
-							display: flex;
+							.btn-delete{
+								display: flex;
+							}
 						}
 					}
 				}
@@ -136,17 +143,21 @@
 					justify-content: flex-start;
 				}
 				&.action-col{
-					display: none;
+					display: flex;
 					width: 32px;
 					justify-content: flex-start;
 					.btn-delete{
+						display: none;
 						width: 16px;
 						height: 16px;
 						border-radius: 16px;
-						display: flex;
 						align-items: center;
 						justify-content: center;
 						cursor: pointer;
+						.symbol{
+							width: 16px;
+							height: 16px;
+						}
 						&:hover{
 							background: $color-grey-light;
 							.symbol{
@@ -161,6 +172,9 @@
 					.symbol{
 						display: none;
 						margin-right: 8px;
+					}
+					.edit{
+						margin-left: 16px;
 					}
 				}
 				&.requirement{
@@ -186,7 +200,6 @@
 				}
 				.edit{
 					font-weight: normal;
-					margin: 0 16px;
 					cursor: pointer;
 				}
 				input{

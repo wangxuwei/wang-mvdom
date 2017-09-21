@@ -46,7 +46,7 @@ export class HomeView extends BaseView {
 			}
 		},
 
-		"click; .table-header .row .cell.impl .edit": (evt:any) => {
+		"click; .table-header .row .cell.action-col .edit": (evt:any) => {
 			var view = this;
 			var targetEl = evt.target;
 			var tableEl = closest(targetEl, ".table")!;
@@ -67,7 +67,7 @@ export class HomeView extends BaseView {
 			}
 		},
 
-		"mousedown; .row .drag-col .icon": (evt:any) => {
+		"mousedown; .row .drag-col .symbol": (evt:any) => {
 			var view = this;
 			var targetEl = evt.target;
 			var rowEl = closest(targetEl, ".row")!;
@@ -260,7 +260,7 @@ export class HomeView extends BaseView {
 	});
 
 	hubEvents = addHubEvents(this.hubEvents, {
-		"dsHub; Feature": (data,info) => {
+		"dataHub; Feature": (data,info) => {
 			refreshLists.call(this);
 		}
 	});
