@@ -1,5 +1,5 @@
 'use strict';
-import { FeatureDao } from "./FeatureDao"
+import { FeatureDao, Feature } from "./FeatureDao"
 
 // export let featureDao: BaseDao = new BaseDao("Feature");
-export let featureDao: FeatureDao = new FeatureDao();
+export let featureDao: FeatureDao<Feature> = new FeatureDao();

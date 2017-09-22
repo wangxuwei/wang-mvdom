@@ -34,8 +34,7 @@ routes.push({
 	handler: async function(request: any, reply: any){
 		var entity = JSON.parse(request.payload.entity);
 		entity = Object.assign({}, entity);
-		var entityId = await featureDao.create(entity);
-		entity.id = entityId;
+		entity = await featureDao.create(entity);
 		reply(entity);
 	}
 });
@@ -56,7 +55,7 @@ routes.push({
 	method: 'POST',
 	path: baseURI + "/" + entityType + "/delete", 
 	handler: async function(request: any, reply: any){
-		var entityId = await featureDao.delete(request.payload.id);
+		var entityId = await featureDao.remove(request.payload.id);
 		reply({id: entityId});
 	}
 });

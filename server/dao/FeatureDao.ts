@@ -1,8 +1,12 @@
-import { BaseDao } from "./BaseDao";
+import { BaseDao, BaseEntity} from "./BaseDao";
 import {db} from "./db";
+import {Crud} from "./crud";
 
+export class Feature extends BaseEntity {
+	name: string;
+}
 
-export class FeatureDao extends BaseDao{
+export class FeatureDao<Feature> extends BaseDao<Feature> {
 
 	constructor(){
 		super("Feature");

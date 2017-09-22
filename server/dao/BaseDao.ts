@@ -1,7 +1,12 @@
 'use strict';
 import {db} from "./db";
+import {Crud, Criteria} from "./crud";
 
-export class BaseDao{
+export class BaseEntity {
+	id?: number;
+}
+
+export class BaseDao<E extends BaseEntity> implements Crud<E>{
 	_entity: string;
 	_seq: number;
 
@@ -10,23 +15,23 @@ export class BaseDao{
 		initSeq.call(this);
 	}
 
-	async get(key:any){
+	async get(id:number): Promise<E>{
 		var data = await db.getData(this._entity);
-		return data[key];
+		return <E>data[id];
 	}
 
 	// create an entity, and return id.
-	async create(dataEntity:any){
+	async create(dataEntity:E): Promise<E>{
 		var data = await db.getData(this._entity);
-		var entity = Object.assign({}, dataEntity);
+		var entity:E = Object.assign({}, dataEntity);
 		entity["id"] = getSeq.call(this);
-		data[entity.id] = entity;
+		data[entity.id!] = entity;
 		await db.setData(this._entity, data);
-		return entity.id;
+		return await this.get(entity.id!);
 	}
 
-	async update(id:any, dataEntity:any){
-		var entity = null;
+	async update(id:number, dataEntity:E): Promise<E>{
+		var entity: E;
 		if(id){
 			var data = await db.getData(this._entity);
 			if(data[id]){
@@ -35,27 +40,42 @@ export class BaseDao{
 				db.setData(this._entity, data);
 			}
 		}
-		return entity;
+
+		return this.get(id);
 	}
 
-	async delete(key:any){
-		if(key){
+	async remove(id: number): Promise<boolean>{
+		if(id){
 			var data = await db.getData(this._entity);
-			if(data[key]){
-				delete data[key];
+			if(data[id]){
+				delete data[id];
 				await db.setData(this._entity, data);
 			}
 		}
+		return new Promise<boolean>(function(resolve, reject){
+			resolve(true);
+		});
 	}
 
-	async list(opts?:any){
+	async first(criteria: Criteria): Promise<E | null>{
+		var list:E[] = await this.list(criteria);
+		return new Promise<E | null>(function(resolve, reject){
+			if(list && list.length > 1){
+				resolve(<E>list[0]);
+			}else{
+				resolve(null);
+			}
+		});
+	};
+
+	async list(criteria: Criteria): Promise<E[]> {
 		var entityStore = await db.getData(this._entity);
 		var tmpList:any[] = [], list;
 
 		var item;
 
 		// get the eventual filters
-		var filters = (opts && opts.filter)?opts.filter:null;
+		var filters = (criteria && criteria.filter)?criteria.filter:null;
 		if (filters){
 			// make sure it is an array of filter
 			filters = (filters instanceof Array)?filters:[filters];
@@ -75,8 +95,8 @@ export class BaseDao{
 
 		// implement the sorting
 		// get the eventual orderBy
-		var orderBy = (opts && opts.orderBy)?opts.orderBy:null;
-		var orderType = (opts && opts.orderType)?opts.orderType:null;
+		var orderBy = (criteria && criteria.orderBy)?criteria.orderBy:null;
+		var orderType = orderBy && orderBy.indexOf("!") == 0?"desc":"asc";
 		tmpList.sort(function(a, b){
 			if(orderType == "desc"){
 				return a.rank < b.rank ? 1 : -1;
@@ -86,8 +106,8 @@ export class BaseDao{
 		});
 
 		// extract the eventual offset, limit from the opts, or set the default
-		var offset = (opts && opts.offset)?opts.offset:0;
-		var limit = (opts && opts.limit)?opts.limit:-1; // -1 means no limit
+		var offset = (criteria && criteria.offset)?criteria.offset:0;
+		var limit = (criteria && criteria.limit)?criteria.limit:-1; // -1 means no limit
 		
 		// Set the "lastIndex + 1" for the for loop
 		var l = (limit !== -1)?(offset + limit):tmpList.length;
@@ -103,9 +123,9 @@ export class BaseDao{
 	}
 }
 
-// --------- BaseDao Utilities --------- //
+// --------- BaseDao private method --------- //
 
-async function initSeq(this: BaseDao){
+async function initSeq(this: BaseDao<BaseEntity>){
 	this._seq = 1;
 	var data = await db.getData(this._entity);
 	var maxId = this._seq;
@@ -115,10 +135,10 @@ async function initSeq(this: BaseDao){
 	this._seq = maxId;
 }
 
-function getSeq(this: BaseDao){
+function getSeq(this: BaseDao<BaseEntity>){
 	return this._seq++;
 }
-// --------- /BaseDao Utilities --------- //
+// --------- /BaseDao private method --------- //
 
 
 
