@@ -1,4 +1,4 @@
-import { BaseView, addHubEvents } from "../base";
+import { BaseView, addHubEvents } from "base";
 import { display, all, first, empty } from "mvdom";
 import { HomeView } from "./HomeView";
 import { NotificationView } from "./NotificationView";

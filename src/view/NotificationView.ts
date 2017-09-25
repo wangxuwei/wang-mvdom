@@ -1,6 +1,6 @@
-import { BaseView, addHubEvents } from "../base";
+import { BaseView, addHubEvents } from "base";
 import { on, remove } from "mvdom";
-import { render } from "../ts/render";
+import { render } from "ts/render";
 
 export class NotificationView extends BaseView {
 	postDisplay() {
