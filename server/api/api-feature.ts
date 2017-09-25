@@ -75,7 +75,7 @@ routes.push({
 	path: baseURI + "/" + entityType + "/reorderFeatures",
 	handler: async function(request: any, reply: any){
 		var features = JSON.parse(request.payload.features);
-		await featureDao.reorderFeatures(features);
-		reply();
+		var result = await featureDao.reorderFeatures(features);
+		reply(result);
 	}
 });
